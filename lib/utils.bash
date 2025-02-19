@@ -34,24 +34,16 @@ install_version() {
 	local install_path="${3%/bin}/bin"
 
 	(
-		asdf current erlang >/dev/null 2>&1
-		if [ $? -eq 0 ]; then
-			echo "An asdf erlang version has already been selected; I'll use that to build $TOOL_NAME."
-		else
-			fail "No asdf erlang version is selected"
-		fi
+		if ! command -v erlang &> /dev/null; then
+			fail "No erlang install found - erlang is required in order to build $TOOL_NAME."
 
-		asdf current elixir >/dev/null 2>&1
-		if [ $? -eq 0 ]; then
-			echo "An asdf elixir version has already been selected; I'll use that to build $TOOL_NAME."
-		else
-			fail "No asdf elixir version is selected"
-		fi
+		if ! command -v elixir &> /dev/null; then
+			fail "No elixir install found - elixir is required in order to build $TOOL_NAME."
 
 		mix escript.install hex protobuf "$version" --force
 
 		mkdir -p "$install_path"
-		cp ~/.mix/escripts/"$TOOL_NAME" "$install_path"
+		mv ~/.mix/escripts/"$TOOL_NAME" "$install_path"
 
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
