@@ -34,11 +34,13 @@ install_version() {
 	local install_path="${3%/bin}/bin"
 
 	(
-		if ! command -v erlang &> /dev/null; then
+		if ! command -v erlang &>/dev/null; then
 			fail "No erlang install found - erlang is required in order to build $TOOL_NAME."
+		fi
 
-		if ! command -v elixir &> /dev/null; then
+		if ! command -v elixir &>/dev/null; then
 			fail "No elixir install found - elixir is required in order to build $TOOL_NAME."
+		fi
 
 		mix escript.install hex protobuf "$version" --force
 
