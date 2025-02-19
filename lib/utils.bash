@@ -48,7 +48,7 @@ install_version() {
 			fail "No asdf elixir version is selected"
 		fi
 
-		mix escript.install hex protobuf "$version"
+		mix escript.install hex protobuf "$version" --force
 
 		mkdir -p "$install_path"
 		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
